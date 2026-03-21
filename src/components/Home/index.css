@@ -1,0 +1,67 @@
+.home-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-container {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.tab-menu-container {
+  margin: 0;
+  padding: 10px 15px 0px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  box-shadow: 0 2px 6px rgba(86, 86, 86, 0.2);
+}
+
+.each-tab-item {
+  color: #000000;
+  font-family: 'Roboto';
+  padding: 0px;
+  margin: 0px;
+}
+
+.active-tab-item {
+  border-bottom: 2px solid #ff4f23;
+  color: #ff4f23;
+}
+
+.menu-button {
+  margin: 10px;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Roboto';
+  font-size: 12px;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+@media screen and (max-width: 576px) {
+  .tab-menu-container {
+    overflow-x: scroll;
+  }
+
+  .menu-button {
+    line-height: 1.2;
+    font-size: 8px;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  .dishes-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+  }
+}
