@@ -20,6 +20,7 @@
 .veg-round {
   height: 25px;
   width: 25px;
+  padding: 10px;
   border-radius: 50%;
   background-color: #00923f;
   margin: 5px;
