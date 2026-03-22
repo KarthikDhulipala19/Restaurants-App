@@ -1,23 +1,26 @@
-import {HiOutlineShoppingCart} from 'react-icons/hi'
+import {AiOutlineShoppingCart} from 'react-icons/ai'
 import './index.css'
 
-const Header = ({cartItems}) => {
-  const getCartItemsCount = () =>
-    cartItems.reduce((acc, item) => acc + item.quantity, 0)
+const Header = ({restaurantName, cartItems}) => {
+  const getTotalCartCount = () => {
+    let count = 0
+    cartItems.forEach(item => {
+      count += item.quantity
+    })
+    return count
+  }
 
   return (
-    <header>
-      <div className="header-container">
-        <h1 className="restaurant-name">UNI Resto Cafe</h1>
-        <div className="order-info">
-          <p className="my-orders-text ">My Orders</p>
-          <div className="cart-info">
-            <HiOutlineShoppingCart size={20} />
-            <span className="cart-items">{getCartItemsCount()}</span>
-          </div>
+    <div className="header-container">
+      <h1 className="restaurant-name">{restaurantName}</h1>
+      <div className="order-info">
+        <p className="my-orders-text">My Orders</p>
+        <div className="cart-info">
+          <AiOutlineShoppingCart size={30} />
+          <p className="cart-items">{getTotalCartCount()}</p>
         </div>
       </div>
-    </header>
+    </div>
   )
 }
 
