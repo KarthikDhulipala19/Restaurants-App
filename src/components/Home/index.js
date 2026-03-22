@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react'
-import {ThreeDot} from 'react-loading-indicators'
 import Header from '../Header'
 import DishItem from '../DishItem'
 
@@ -10,6 +9,7 @@ const Home = () => {
   const [responseData, setResponseData] = useState([])
   const [activeCategoryItem, setActiveCategory] = useState('')
   const [cartItems, setCartItems] = useState([])
+  const [restaurantName, setRestaurantName] = useState('')
 
   const getUpdatedData = tableMenuList =>
     tableMenuList.map(eachMenu => ({
@@ -36,7 +36,10 @@ const Home = () => {
     const apiResponse = await fetch(api)
     const data = await apiResponse.json()
     const updatedData = getUpdatedData(data[0].table_menu_list)
+    console.log('Updated Data:', updatedData)
+
     setResponseData(updatedData)
+    setRestaurantName(data[0].restaurant_name)
     setActiveCategory(updatedData[0].menuCategoryId)
     setIsLoading(false)
   }
@@ -76,13 +79,9 @@ const Home = () => {
 
   const renderLoadingView = () => (
     <div className="loading-container">
-      <ThreeDot
-        variant="brick-stack"
-        color="#00ea7e"
-        size="medium"
-        text="Loading.."
-        textColor="#20d18a"
-      />
+      <div className="loader">
+        <p>Loading menu</p>
+      </div>
     </div>
   )
 
@@ -106,7 +105,6 @@ const Home = () => {
           <button
             type="button"
             className="menu-button"
-            key={eachCategory.menuCategoryId}
             onClick={onClickHandler}
           >
             {eachCategory.menuCategory}
@@ -116,9 +114,11 @@ const Home = () => {
     })
 
   const renderDishes = () => {
-    const {categoryDishes} = responseData.find(
+    const category = responseData.find(
       eachItem => eachItem.menuCategoryId === activeCategoryItem,
     )
+
+    const {categoryDishes} = category
 
     return (
       <ul className="dishes-container">
@@ -140,11 +140,13 @@ const Home = () => {
     // eslint-disable-next-line
   }, [])
 
-  return isLoading ? (
-    renderLoadingView()
-  ) : (
+  if (isLoading) {
+    return renderLoadingView()
+  }
+
+  return (
     <div className="home-container">
-      <Header cartItems={cartItems} />
+      <Header restaurantName={restaurantName} cartItems={cartItems} />
       <ul className="tab-menu-container">{renderTabMenuList()}</ul>
       {renderDishes()}
     </div>
