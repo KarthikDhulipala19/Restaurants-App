@@ -1,36 +1,44 @@
 import './index.css'
 
-const DishItem = props => {
-  const {dishDetails, cartItems, addItemToCart, removeItemFromCart} = props
-
+const DishItem = ({
+  dishDetails,
+  cartItems,
+  addItemToCart,
+  removeItemFromCart,
+}) => {
   const {
     dishId,
     dishName,
-    dishType,
+    dishImage,
+    dishDescription,
     dishPrice,
     dishCurrency,
-    dishDescription,
-    dishImage,
     dishCalories,
-    addonCat,
     dishAvailability,
+    dishType,
+    addonCat,
   } = dishDetails
 
-  const onIncreaseQuantity = () => addItemToCart(dishDetails)
-  const onDecreaseQuantity = () => removeItemFromCart(dishDetails)
-
-  const getQuantity = () => {
+  const getQuantityFromCart = () => {
     const cartItem = cartItems.find(item => item.dishId === dishId)
     return cartItem ? cartItem.quantity : 0
   }
 
+  const onClickIncrement = () => {
+    addItemToCart(dishDetails)
+  }
+
+  const onClickDecrement = () => {
+    removeItemFromCart(dishDetails)
+  }
+
   const renderControllerButton = () => (
     <div className="controller-container">
-      <button className="button" type="button" onClick={onDecreaseQuantity}>
+      <button type="button" className="button" onClick={onClickDecrement}>
         -
       </button>
-      <p className="quantity">{getQuantity()}</p>
-      <button className="button" type="button" onClick={onIncreaseQuantity}>
+      <p className="quantity">{getQuantityFromCart()}</p>
+      <button type="button" className="button" onClick={onClickIncrement}>
         +
       </button>
     </div>
@@ -39,9 +47,20 @@ const DishItem = props => {
   return (
     <li className="dish-item-container">
       <div
-        className={`veg-border ${dishType === 1 ? 'non-veg-border' : ''} me-3`}
+        className={dishType === 1 ? 'veg-border' : 'non-veg-border'}
+        style={{
+          height: '30px',
+          width: '30px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '4px',
+          padding: '10px',
+        }}
       >
-        <div className={`veg-round ${dishType === 1 ? 'non-veg-round' : ''}`} />
+        <div
+          className={dishType === 1 ? 'veg-round' : 'veg-round non-veg-round'}
+        />
       </div>
       <div className="dish-details-container">
         <h1 className="dish-name">{dishName}</h1>
@@ -49,17 +68,17 @@ const DishItem = props => {
           {dishCurrency} {dishPrice}
         </p>
         <p className="dish-description">{dishDescription}</p>
-        {dishAvailability && renderControllerButton()}
-        {!dishAvailability ? (
+        {dishAvailability ? (
+          renderControllerButton()
+        ) : (
           <p className="not-availability-text">Not available</p>
-        ) : null}
-        {addonCat.length !== 0 && (
+        )}
+        {addonCat.length > 0 && (
           <p className="addon-availability-text">Customizations available</p>
         )}
       </div>
-
       <p className="dish-calories">{dishCalories} calories</p>
-      <img className="dish-image" alt={dishName} src={dishImage} />
+      <img src={dishImage} alt={dishName} className="dish-image" />
     </li>
   )
 }
